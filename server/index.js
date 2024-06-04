@@ -52,4 +52,4 @@ taskRouter.route("/:task_id")
     return res.json({})
   });
 
-app.use("/api/todo/", taskRouter);
+app.use("/api/task/", taskRouter);
