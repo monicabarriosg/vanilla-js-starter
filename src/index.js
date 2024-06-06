@@ -1,125 +1,9 @@
-// //variable "taskInput" It is the space where tasks are added.
-// //variable "addTaskBtn" It is the button to add tasks.
-// //variable "taskList" is the initial message that there are no tasks.
-// class TaskManager {
-//   constructor() {
-//     this.taskInput = document.querySelector(".taskInput");
-//     this.addTaskBtn = document.querySelector(".addTaskBtn");
-//     this.taskList = document.querySelector(".taskList");
-//     this.completedTasks = 0;
-//     //initialize
-//     this.init();
-//   }
-//   //initialize addEventListener events for buttons and task list
-//   init() {
-//     //this. it is known that a specific variable is going to be used.
-//     this.addTaskBtn.addEventListener("click", this.addTask.bind(this));
-//     this.getTasks();
-//   }
-//   //to add a new task
-//   addTask() {
-//     //specific variable    //remove spaces
-//     const taskText = this.taskInput.value.trim();
-//     console.log(taskText);
-//     switch (true) {
-//       case taskText !== "":
-//         fetch("http://localhost:3000/api/task", {
-//           //Create a task with the object and pass an object with the
-//           //data that you want to add.
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify({ task: taskText }),
-//         })
-//           //method schedules callback functions for the eventual completion of a Promise
-//           .then((response) => {
-//             //contains a Boolean indicating whether the response was successful
-//             if (!response.ok) {
-//               throw new Error("Error al agregar la tarea");
-//               // throw informs the generator of an error condition and allows it to handle the error, or perform cleanup and close itself.
-//             }
-//             return response;
-//           })
-//           .then(() => {
-//             // After adding the task, update the task list
-//             this.getTasks();
-//           })
-//           .catch((error) => {
-//             console.error("Error:", error);
-//             alert("Error al agregar la tarea");
-//           });
-//         break;
-//       default:
-//         alert("Ingrese un texto");
-//         break;
-//     }
- 
- 
-//   }
-//   getTasks() {
-//     fetch("http://localhost:3000/api/task")
-//         .then((response) => {
-//             if (!response.ok) {
-//                 throw new Error("Error al obtener las tareas");
-//             }
-//             return response.json();
-//         })
-//         .then((data) => {
-//             this.taskList.innerHTML = "";
-
-//             data.forEach((task) => {
-//                 const li = document.createElement("li");
-//                 li.innerText = task.taskName;
-//                 this.taskList.appendChild(li);
-//             });
-
-//             this.taskInput.value = '';
-//         })
-//         .catch((error) => {
-//             console.error("Error:", error);
-//             alert("Error al obtener las tareas");
-//         });
-// }
-
-
-// deleteTask(taskId) {
-//   fetch(`http://localhost:3000/api/task/${taskId}`, {
-//       method: 'DELETE'
-//   })
-//   .then(response => {
-//       if (!response.ok) {
-//           throw new Error('Error al eliminar la tarea');
-//       }
-//       document.querySelector(`[data-id="${taskId}"]`).remove();
-//       this.updateEmptyMessage();
-//   })
-//   .catch(error => {
-//       console.error('Error:', error);
-//       alert('Error al eliminar la tarea');
-//   });
-// }
-  
-// }
-
-// const taskManager = new TaskManager();
-// export { TaskManager };
-
-
-
-
-
-
-
-
-
-
 
 document.addEventListener("DOMContentLoaded", function() {
   const taskInput = document.querySelector(".taskInput");
   const addTaskBtn = document.querySelector(".addTaskBtn");
   const taskList = document.querySelector(".taskList");
-  // let completedTasks = 0;
+ let completedTasks = 0;
 
   function init() {
     addTaskBtn.addEventListener("click", addTask);
@@ -159,25 +43,28 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
    
-  // function completeTask(taskId, completedTasks, getTasks) {
-  //   fetch(`http://localhost:3000/api/task/${taskId}`, {
-  //     method: "PUT",
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Error al completar la tarea");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then(() => {
-  //       completedTasks++;
-  //       getTasks();
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //       alert("Error al completar la tarea");
-  //     });
-  // }
+  function completeTask(taskId, completedTasks, getTasks) {
+    fetch(`(http://localhost:3000/api/task/${taskId}`, {
+      method: "PUT",
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error al completar la tarea");
+      }
+      return response.json();
+    })
+     
+      .then(() => {
+        completedTasks++;
+        getTasks();
+      })
+      
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Error al completar la tarea");
+      });
+     
+  }
 
   function deleteTask(taskId) {
     fetch(`http://localhost:3000/api/task/${taskId}`, {
@@ -227,9 +114,9 @@ document.addEventListener("DOMContentLoaded", function() {
             deleteBtn.onclick = function() {
               deleteTask(task.id);
             };
-
+            console.log(task);
             li.appendChild(checkbox);
-            li.appendChild(document.createTextNode(task.text));
+            li.appendChild(document.createTextNode(task.task));
             li.appendChild(deleteBtn);
             taskList.appendChild(li);
           });
