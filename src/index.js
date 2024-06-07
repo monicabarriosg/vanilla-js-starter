@@ -1,21 +1,21 @@
 //addTaskBtn es un boton para agregar las tareas
 //taskList es donde las nuevas tareas se van a agregar
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   const taskInput = document.querySelector(".taskInput");
   const addTaskBtn = document.querySelector(".addTaskBtn");
   const taskList = document.querySelector(".taskList");
- let completedTasks = 0;
-//funcion para los eventos de los botones
+  let completedTasks = 0;
+  //funcion para los eventos de los botones
   function init() {
     addTaskBtn.addEventListener("click", addTask);
-    taskInput.addEventListener("keypress", function(event) {
+    taskInput.addEventListener("keypress", function (event) {
       if (event.key === "Enter") {
         addTask();
       }
     });
     getTasks();
   }
-//funcion para añadir una tarea
+  //funcion para añadir una tarea
   function addTask() {
     const taskText = taskInput.value.trim();
     if (taskText !== "") {
@@ -42,30 +42,29 @@ document.addEventListener("DOMContentLoaded", function() {
       alert("Ingrese un texto");
     }
   }
-   //funcion para completar una tarea
+  //funcion para completar una tarea
+
   function completeTask(taskId) {
-    fetch(`(http://localhost:3000/api/task/${taskId}`, {
+    fetch(`http://localhost:3000/api/task/${taskId}`, {
       method: "PUT",
     })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error al completar la tarea");
-      }
-      return response.json();
-    })
-     
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error al completar la tarea");
+        }
+        return response.json();
+      })
       .then(() => {
-       
         completedTasks++;
+        comple(); //
         getTasks();
       })
-      
       .catch((error) => {
         console.error("Error:", error);
         alert("Error al completar la tarea");
       });
-     
   }
+
   //funcion para eliminar una tarea
 
   function deleteTask(taskId) {
@@ -102,23 +101,21 @@ document.addEventListener("DOMContentLoaded", function() {
         if (data.length === 0) {
           taskList.innerHTML = "<p>No existen tareas</p>";
         } else {
-
           data.forEach((task) => {
-            //bloque para traer la tarea a la pag web
+            //bloque para traer la tarea a la pag web con check
             const li = document.createElement("li");
-            const checkbox = document.createElement("input");
+            const checkbox = document.createElement ("input");
             checkbox.type = "checkbox";
             checkbox.className = "taskCheckbox";
-            checkbox.onchange = function() {
+            checkbox.onchange = function () {
               completeTask(task.id);
             };
             //bloque para que cada tarea se añada con un boton de eliminar
             const deleteBtn = document.createElement("button");
             deleteBtn.innerText = "Eliminar";
             deleteBtn.className = "deleteBtn";
-            deleteBtn.onclick = function() {
+            deleteBtn.onclick = function () {
               deleteTask(task.id);
-              
             };
             // console.log(task);
             li.appendChild(checkbox);
@@ -128,14 +125,85 @@ document.addEventListener("DOMContentLoaded", function() {
           });
         }
 
-        taskInput.value = '';
+        taskInput.value = "";
       })
       .catch((error) => {
         console.error("Error:", error);
         alert("Error al obtener las tareas");
       });
   }
-  console.log(completedTasks);
+  function comple() {
+    completed.innerHTML = `Tareas completadas: ${completedTasks}`;
+  }
+  console.log(completed);
 
   init();
 });
+
+// import { addTask } from './addTask.js';
+// // import { deleteTask } from './deleteTask.js';
+// import { getTasks } from './getTasks.js';
+// // import { completeTask } from './completeTask.js';
+
+// document.addEventListener("DOMContentLoaded", function() {
+//   const taskInput = document.querySelector(".taskInput");
+//   const addTaskBtn = document.querySelector(".addTaskBtn");
+//   const taskList = document.querySelector(".taskList");
+//   let completedTasks = 0;
+
+//   function init() {
+//     addTaskBtn.addEventListener("click", handleAddTask);
+//     taskInput.addEventListener("keypress", handleKeyPress);
+//     // getTasks(renderTasks);
+//   }
+
+//   function handleAddTask() {
+//     const taskText = taskInput.value.trim();
+//     if (taskText !== "") {
+//       addTask(taskText, getTasks);
+//     } else {
+//       alert("Ingrese un texto");
+//     }
+//   }
+
+//   function handleKeyPress(event) {
+//     if (event.key === "Enter") {
+//       handleAddTask();
+//     }
+//   }
+
+//   function taskList(tasks) {
+//     taskList.innerHTML = "";
+
+//     if (tasks.length === 0) {
+//       taskList.innerHTML = "<p>No existen tareas</p>";
+//      }
+//   //   } else {
+//   //     tasks.forEach((task) => {
+//   //       const li = document.createElement("li");
+//   //       const checkbox = document.createElement("input");
+//   //       checkbox.type = "checkbox";
+//   //       checkbox.className = "taskCheckbox";
+//   //       checkbox.onchange = function() {
+//   //         completeTask(task.id, completedTasks, getTasks);
+//   //       };
+
+//   //       const deleteBtn = document.createElement("button");
+//   //       deleteBtn.innerText = "Eliminar";
+//   //       deleteBtn.className = "deleteBtn";
+//   //       deleteBtn.onclick = function() {
+//   //         deleteTask(task.id, getTasks);
+//   //       };
+
+//   //       li.appendChild(checkbox);
+//   //       li.appendChild(document.createTextNode(task.task));
+//   //       li.appendChild(deleteBtn);
+//   //       taskList.appendChild(li);
+//   //     });
+//   //   }
+
+//   //   taskInput.value = '';
+//   // }
+
+//   init();
+// });
