@@ -1,10 +1,11 @@
-
+//addTaskBtn es un boton para agregar las tareas
+//taskList es donde las nuevas tareas se van a agregar
 document.addEventListener("DOMContentLoaded", function() {
   const taskInput = document.querySelector(".taskInput");
   const addTaskBtn = document.querySelector(".addTaskBtn");
   const taskList = document.querySelector(".taskList");
  let completedTasks = 0;
-
+//funcion para los eventos de los botones
   function init() {
     addTaskBtn.addEventListener("click", addTask);
     taskInput.addEventListener("keypress", function(event) {
@@ -14,10 +15,9 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     getTasks();
   }
-
+//funcion para añadir una tarea
   function addTask() {
     const taskText = taskInput.value.trim();
-
     if (taskText !== "") {
       fetch("http://localhost:3000/api/task", {
         method: "POST",
@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", function() {
       alert("Ingrese un texto");
     }
   }
-   
-  function completeTask(taskId, completedTasks, getTasks) {
+   //funcion para completar una tarea
+  function completeTask(taskId) {
     fetch(`(http://localhost:3000/api/task/${taskId}`, {
       method: "PUT",
     })
@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
      
       .then(() => {
+       
         completedTasks++;
         getTasks();
       })
@@ -65,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
      
   }
+  //funcion para eliminar una tarea
 
   function deleteTask(taskId) {
     fetch(`http://localhost:3000/api/task/${taskId}`, {
@@ -84,6 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
         alert("Error al eliminar la tarea");
       });
   }
+  //funcion para mostrar mis tareas en la pantalla
 
   function getTasks() {
     fetch("http://localhost:3000/api/task")
@@ -99,7 +102,9 @@ document.addEventListener("DOMContentLoaded", function() {
         if (data.length === 0) {
           taskList.innerHTML = "<p>No existen tareas</p>";
         } else {
+
           data.forEach((task) => {
+            //bloque para traer la tarea a la pag web
             const li = document.createElement("li");
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
@@ -107,14 +112,15 @@ document.addEventListener("DOMContentLoaded", function() {
             checkbox.onchange = function() {
               completeTask(task.id);
             };
-
+            //bloque para que cada tarea se añada con un boton de eliminar
             const deleteBtn = document.createElement("button");
             deleteBtn.innerText = "Eliminar";
             deleteBtn.className = "deleteBtn";
             deleteBtn.onclick = function() {
               deleteTask(task.id);
+              
             };
-            console.log(task);
+            // console.log(task);
             li.appendChild(checkbox);
             li.appendChild(document.createTextNode(task.task));
             li.appendChild(deleteBtn);
@@ -129,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function() {
         alert("Error al obtener las tareas");
       });
   }
-  console.log();
+  console.log(completedTasks);
 
   init();
 });

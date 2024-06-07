@@ -1,11 +1,12 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+    background-color: #eef5fc;
     margin: 0;
     padding: 0;
 }
 
 .container {
+   
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
@@ -43,12 +44,16 @@ h1 {
 }
 /* input taskList */
 .taskList {
+    /* display: flex;
+    flex: 1; */
+    flex-flow: row wrap;
     list-style-type: none;
     padding: 0;
 }
 
 .taskList li {
-    background-color: #fff;
+    flex-flow: row wrap;
+    background-color: #ffffff;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
@@ -63,7 +68,7 @@ h1 {
     padding: 5px 10px;
     font-size: 14px;
     background-color: #dc3545;
-    color: #fff;
+    color: #ffffff;
     border: none;
     border-radius: 3px;
     cursor: pointer;
