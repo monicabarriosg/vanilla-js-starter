@@ -13,6 +13,8 @@ body {
     background-color: #ffffff;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+   
 }
 
 h1 {
@@ -49,6 +51,7 @@ h1 {
     flex-flow: row wrap;
     list-style-type: none;
     padding: 0;
+   
 }
 
 .taskList li {
@@ -62,6 +65,7 @@ h1 {
 
 .taskList li input[type="checkbox"] {
     margin-right: 10px;
+
 }
 /* button delete */
 .taskList li button {

@@ -42,11 +42,23 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Ingrese un texto");
     }
   }
+  //espacio para mostrar el contador
+  function comple() {
+    completed.innerHTML = `Tareas completadas: ${completedTasks}`;
+  }
   //funcion para completar una tarea
 
   function completeTask(taskId) {
     fetch(`http://localhost:3000/api/task/${taskId}`, {
       method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({ "check": "checked" }),
+      if () {
+        
+      } 
     })
       .then((response) => {
         if (!response.ok) {
@@ -55,9 +67,8 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json();
       })
       .then(() => {
-        completedTasks++;
+        completedTasks++
         comple(); //
-        getTasks();
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -65,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
+    // console.log(completeTask);
   //funcion para eliminar una tarea
 
   function deleteTask(taskId) {
@@ -102,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
           taskList.innerHTML = "<p>No existen tareas</p>";
         } else {
           data.forEach((task) => {
+
             //bloque para traer la tarea a la pag web con check
             const li = document.createElement("li");
             const checkbox = document.createElement ("input");
@@ -109,7 +122,11 @@ document.addEventListener("DOMContentLoaded", function () {
             checkbox.className = "taskCheckbox";
             checkbox.onchange = function () {
               completeTask(task.id);
+              checkbox.disabled = true;
             };
+            li.appendChild(checkbox);
+            taskList.appendChild(li);
+        
             //bloque para que cada tarea se añada con un boton de eliminar
             const deleteBtn = document.createElement("button");
             deleteBtn.innerText = "Eliminar";
@@ -132,13 +149,59 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("Error al obtener las tareas");
       });
   }
-  function comple() {
-    completed.innerHTML = `Tareas completadas: ${completedTasks}`;
-  }
-  console.log(completed);
 
+
+  // console.log(checkbox);
   init();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import { addTask } from './addTask.js';
 // // import { deleteTask } from './deleteTask.js';
