@@ -1,11 +1,14 @@
-//addTaskBtn es un boton para agregar las tareas
-//taskList es donde las nuevas tareas se van a agregar
+// This event listener listens for the activation of the HTML document
 document.addEventListener("DOMContentLoaded", function () {
+  // this variable is to select the input field where tasks are entered (in HTML "class="taskInput")
   const taskInput = document.querySelector(".taskInput");
+  // this variable is selecting the button to add tasks (in HTML "class="addTaskBtn")
   const addTaskBtn = document.querySelector(".addTaskBtn");
+  // esta variable esta Seleccionando la lista donde se mostrarán las tareas (in HTML "class="taskList"")
   const taskList = document.querySelector(".taskList");
+  // this is the variable for the counter of completed tasks
   let completedTasks = 0;
-  //funcion para los eventos de los botones
+// Function to initialize event listeners and fetch existing tasks
   function init() {
     addTaskBtn.addEventListener("click", addTask);
     taskInput.addEventListener("keypress", function (event) {
@@ -15,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     getTasks();
   }
-  //funcion para añadir una tarea
+   // Function to add a new task
   function addTask() {
     const taskText = taskInput.value.trim();
     if (taskText !== "") {
@@ -42,11 +45,12 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Ingrese un texto");
     }
   }
-  //espacio para mostrar el contador
+  // function cont
+  let completed = document.getElementById("completed");
   function comple() {
     completed.innerHTML = `Tareas completadas: ${completedTasks}`;
   }
-  //funcion para completar una tarea
+  // Function to mark a task as completed
 
   function completeTask(taskId) {
     fetch(`http://localhost:3000/api/task/${taskId}`, {
@@ -56,9 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
       },
 
       body: JSON.stringify({ "check": "checked" }),
-      if () {
-        
-      } 
+      
     })
       .then((response) => {
         if (!response.ok) {
@@ -76,10 +78,10 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-    // console.log(completeTask);
-  //funcion para eliminar una tarea
+    // console.log(completeTask)
+    // Function to delete a task
 
-  function deleteTask(taskId) {
+  function deleteTask(taskId, isChecked) {
     fetch(`http://localhost:3000/api/task/${taskId}`, {
       method: "DELETE",
     })
@@ -90,14 +92,20 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json();
       })
       .then(() => {
-        getTasks();
+        if (isChecked) {   
+          completedTasks--;
+          comple(); // Update the completed tasks counter
+        }
+        getTasks(); // Refresh the task list
       })
+
+
       .catch((error) => {
         console.error("Error:", error);
         alert("Error al eliminar la tarea");
       });
   }
-  //funcion para mostrar mis tareas en la pantalla
+  // Función para recuperar tareas de la API y mostrarlas
 
   function getTasks() {
     fetch("http://localhost:3000/api/task")
@@ -115,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           data.forEach((task) => {
 
-            //bloque para traer la tarea a la pag web con check
+             // Block to display the task with a checkbox
             const li = document.createElement("li");
             const checkbox = document.createElement ("input");
             checkbox.type = "checkbox";
@@ -126,8 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
             };
             li.appendChild(checkbox);
             taskList.appendChild(li);
-        
-            //bloque para que cada tarea se añada con un boton de eliminar
+            // this block to add a delete button for each task
             const deleteBtn = document.createElement("button");
             deleteBtn.innerText = "Eliminar";
             deleteBtn.className = "deleteBtn";
@@ -152,6 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   // console.log(checkbox);
+  // Initializing the application
   init();
 });
 
